@@ -1,4 +1,6 @@
-# tintin-cvbuilder-edenx
+# Tintin CV Builder
+
+Repo: `tintin-cvbuilder-edenx`.
 
 CV builder: import JSON → edit in a form → live A4 preview → print / save as PDF → export JSON.
 Three CV templates (P1a / P1c / P1d) ported pixel-accurately from the design export; the app UI uses HeroUI v3 + Tailwind v4.
@@ -64,7 +66,7 @@ Netlify builds deploy previews for pull requests too (behind the same login gate
    | `AUTH_USERNAME` | Username typed on the login page |
    | `AUTH_EMAIL` | Inbox that receives the login code |
    | `RESEND_API_KEY` | Resend API key (mark as secret) |
-   | `RESEND_FROM` | Sender, e.g. `CV Builder <onboarding@resend.dev>` |
+   | `RESEND_FROM` | Sender, e.g. `Tintin CV Builder <onboarding@resend.dev>` |
    | `SESSION_SECRET` | Random string: `openssl rand -hex 32` (mark as secret) |
 
 4. **Deploy** — *Deploys → Trigger deploy*, or push to `master`. Changing env vars needs a redeploy.

@@ -95,8 +95,8 @@ const LoginPage = () => {
                         CV
                     </div>
                     <div>
-                        <h1 className="font-display text-xl leading-tight font-black tracking-tight">CV Builder</h1>
-                        <p className="text-xs text-muted">TinTin · EdenX</p>
+                        <h1 className="font-display text-xl leading-tight font-black tracking-tight">Tintin CV Builder</h1>
+                        <p className="text-xs text-muted">EdenX</p>
                     </div>
                 </div>
 

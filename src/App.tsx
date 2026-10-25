@@ -83,14 +83,14 @@ const App = () => {
                             CV
                         </div>
                         <div className="hidden sm:block">
-                            <h1 className="font-display text-lg leading-tight font-black tracking-tight">CV Builder</h1>
+                            <h1 className="font-display text-lg leading-tight font-black tracking-tight">Tintin CV Builder</h1>
                             <p className="text-xs text-muted">{isDraftSaved ? 'Draft saved in this browser' : "Couldn't save draft"}</p>
                         </div>
                     </div>
 
                     <Select
                         aria-label="CV template"
-                        className="order-last w-full md:order-none md:ms-4 md:w-72"
+                        className="order-last w-full md:order-none md:ms-4 md:w-60 xl:w-72"
                         value={templateId}
                         onChange={value => {
                             if (isTemplateId(value)) setTemplateId(value);
@@ -123,11 +123,11 @@ const App = () => {
                     <div className="ms-auto flex items-center gap-2">
                         <Button variant="secondary" aria-label="Import JSON" onPress={() => importInputRef.current?.click()}>
                             <FileArrowUp />
-                            <span className="hidden sm:inline">Import JSON</span>
+                            <span className="hidden xl:inline">Import JSON</span>
                         </Button>
                         <Button variant="secondary" aria-label="Export JSON" onPress={handleExport}>
                             <FileArrowDown />
-                            <span className="hidden sm:inline">Export JSON</span>
+                            <span className="hidden xl:inline">Export JSON</span>
                         </Button>
                         <Button onPress={() => window.print()}>
                             <Printer />

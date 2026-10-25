@@ -13,10 +13,10 @@ const sendOtpEmail = async (otp) => {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            from: process.env.RESEND_FROM || 'CV Builder <onboarding@resend.dev>',
+            from: process.env.RESEND_FROM || 'Tintin CV Builder <onboarding@resend.dev>',
             to: [getEnv('AUTH_EMAIL')],
-            subject: `CV Builder login code: ${otp}`,
-            text: `Your CV Builder login code is ${otp}. It expires in 5 minutes.\n\nIf you did not request this, ignore this email.`,
+            subject: `Tintin CV Builder login code: ${otp}`,
+            text: `Your Tintin CV Builder login code is ${otp}. It expires in 5 minutes.\n\nIf you did not request this, ignore this email.`,
         }),
     });
     if (!res.ok) {
