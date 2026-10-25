@@ -1,6 +1,6 @@
 # Tintin CV Builder
 
-Repo: `tintin-cvbuilder-edenx`.
+Repo: `eden-x-android/tintin-cvbuilder` (local folder: `tintin-cvbuilder-edenx`).
 
 CV builder: import JSON → edit in a form → live A4 preview → print / save as PDF → export JSON.
 Three CV templates (P1a / P1c / P1d) ported pixel-accurately from the design export; the app UI uses HeroUI v3 + Tailwind v4.
@@ -56,7 +56,7 @@ Netlify builds deploy previews for pull requests too (behind the same login gate
 
 1. **Resend** — sign up at [resend.com](https://resend.com) with the email that should receive login codes
    (without a verified domain, Resend only delivers to the account owner's address). Create an API key.
-2. **Netlify** — *Add new site → Import an existing project → GitHub* → pick `eden-x-android/tintin-cvbuilder-edenx`.
+2. **Netlify** — *Add new site → Import an existing project → GitHub* → pick `eden-x-android/tintin-cvbuilder`.
    Production branch: `master`. Build settings come from `netlify.toml` — leave the form fields as detected.
    (If the repo is not listed, grant the Netlify GitHub app access to it under *Configure the Netlify app on GitHub*.)
 3. **Environment variables** — *Site configuration → Environment variables*, scope **All** (functions and edge functions need them):
