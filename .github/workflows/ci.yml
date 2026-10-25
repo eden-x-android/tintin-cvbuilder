@@ -1,0 +1,28 @@
+# Kiểm tra code (typecheck, lint, build) cho mọi PR và mỗi lần push lên master.
+# Deploy KHÔNG chạy ở đây: Netlify tự build + deploy master qua Git integration (xem README).
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+# Push liên tiếp lên cùng nhánh thì huỷ lần chạy cũ, đỡ tốn phút GitHub Actions.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run build
