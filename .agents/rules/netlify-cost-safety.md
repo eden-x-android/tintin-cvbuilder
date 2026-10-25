@@ -11,6 +11,7 @@ Rule này bắt buộc với AI agent (Claude Code) khi thao tác trong repo —
 - **Netlify Free plan**: static hosting (`dist/`), Functions (`netlify/functions/`), Edge Functions (`netlify/edge-functions/`), Blobs (store `auth` lưu OTP tạm).
 - **Resend Free**: gửi email OTP (giới hạn 100 mail/ngày, 3.000 mail/tháng).
 - Deploy production tự động khi push lên `master` (Netlify Git integration). Deploy preview cho branch/PR khác cũng được gate bởi login.
+- **GitHub Actions** (repo private, free 2.000 phút/tháng): `.github/workflows/ci.yml` chỉ chạy typecheck/lint/build, không deploy. Không thêm job nặng, matrix nhiều phiên bản hay lịch chạy định kỳ khi chưa hỏi người dùng.
 
 ## Cấm tuyệt đối
 - **Không được tự động** bật, nâng cấp hoặc cấu hình bất kỳ dịch vụ/tính năng nào có khả năng phát sinh phí, bao gồm nhưng không giới hạn:

@@ -25,16 +25,28 @@ Chỉ khác giá trị mặc định. Đều dùng layout **Clean (ATS)** + ph�
 ## Quy tắc port
 - Port markup ATS 1:1: giữ thứ tự section (header → contacts → SUMMARY → OBJECTIVE → SKILLS → RELEVANT EXPERIENCE → PROJECTS → footer phương án 1), giữ nguyên text tiêu đề tiếng Anh in hoa, mọi kích thước px, gap, letter-spacing, line-height, màu xám trung tính.
 - Trang: `794px × min-height 1123px`, padding `52px 56px`, nền trắng, box-shadow chỉ hiện trên màn hình. In: `@page { size: A4; margin: 0 }`.
-- Logic `renderVals()` port thành hàm thuần `buildCvView` — giữ đúng hành vi: bỏ giá trị rỗng/`null`/mảng rỗng, ghép `startDate – endDate` bằng en dash, đánh số project `01, 02, ...`, meta project `Platform · OS · SDLC`, contact LinkedIn bỏ `https://www.` và `/` cuối, Location tách khỏi lưới contact.
-- Ảnh: slot `88×88px`, bo góc `10px`, lấy từ data URL trong `CvData`; ẩn khi `showPhoto = false` hoặc chưa có ảnh.
-- Cờ hiển thị giữ nguyên tên và mặc định của thiết kế: `showPhoto`, `showReferences`, `showOverview` (đều `true`).
+- Logic `renderVals()` port thành hàm thuần `buildCvView` — giữ đúng hành vi: bỏ giá trị rỗng/`null`/mảng rỗng, ghép `startDate – endDate` bằng en dash (tháng in dạng `June 2024`), contact LinkedIn bỏ `https://www.` và `/` cuối, Location tách khỏi lưới contact.
+- Link trên CV (contact, email reference, link nhúng trong text) dùng chung kiểu highlight `.cv-link` của thiết kế: chữ `#2a2a2e`, không gạch chân, dải `tint` của theme cao 42% ở chân chữ, hover phủ kín.
+- Ảnh: slot `88×88px`, bo góc `10px`, lấy từ data URL trong `CvData`; chưa có ảnh thì ẩn.
+- Không port các cờ `showPhoto` / `showReferences` / `showOverview` của thiết kế: mục nào có dữ liệu thì hiện, không có thì ẩn (người dùng đã chốt).
 - Sau khi port, đối chiếu bằng screenshot headless Chrome cạnh bản export gốc (cùng dữ liệu mẫu) trước khi coi là xong.
 
 ## Font — phải đúng file của bản export
-- Tự host woff2 lấy từ manifest của bundle vào `public/fonts/`, khai báo `@font-face` trong `Global.css` với **đúng** `font-weight`, `font-style`, `unicode-range` như bundle. Bắt buộc có subset `vietnamese`.
+- Tự host woff2 lấy từ manifest của bundle vào `public/fonts/`, khai báo `@font-face` trong `src/Fonts.css` với **đúng** `font-weight`, `font-style`, `unicode-range` như bundle. Bắt buộc có subset `vietnamese`.
 - Chỉ lấy các face mà bundle có — không tự thêm weight. Bundle có:
   - Manrope 400–800
   - Archivo 400–700
   - Mulish 400–700
   - Cormorant Garamond chỉ có 500, 500 italic, 600. Tiêu đề `700` của P1d trong bản gốc được render bằng face 600; thêm face 700 sẽ làm lệch thiết kế.
 - Subset `cyrillic`/`greek` có thể bỏ (CV chỉ tiếng Việt/Anh) — giữ `latin`, `latin-ext`, `vietnamese`.
+- Font là variable: nhiều weight trỏ chung một file woff2, nhưng vẫn khai báo từng weight riêng như bundle (không gộp thành dải `400 800`, sẽ mở khoá weight bundle không có).
+
+## Khác biệt có chủ đích so với bản export (đã chốt với người dùng)
+- Ô ảnh chỉ hiện khi đã có ảnh (bản export luôn hiện placeholder "Ảnh" vì là công cụ thiết kế).
+- Section/dòng rỗng bị ẩn thay vì hiện tiêu đề trống hoặc dấu ` · ` thừa.
+- Dòng thời gian công việc **bỏ location** (thiết kế có `· location`): chỉ `June 2024 – Present`.
+- PROJECTS là section độc lập (schema `projects` riêng), **không** in tên công ty bên phải tên dự án.
+- Dòng meta dự án nối mọi cặp key-value người dùng nhập (`Key: Value  ·  Key: Value`), không cố định Platform/OS/SDLC.
+- Dự án có nhãn **"Responsibilities:"** (kiểu giống "Result:") phía trên danh sách công việc.
+- Link nhúng `[chữ](url)` trong text dài render bằng `.cv-link`.
+- In: tiêu đề section không treo cuối trang (`break-after: avoid`), padding lặp lại mỗi trang (`box-decoration-break: clone`), ngắt trang chủ động theo section (`sectionBreaks`) và theo job/dự án (`pageBreakAfter`).

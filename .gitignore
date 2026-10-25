@@ -74,3 +74,6 @@ dist-ssr
 
 # dotenv environment variables file
 .env
+
+# Bản export thiết kế gốc — chỉ để tham chiếu local, chứa dữ liệu cá nhân thật
+asset/

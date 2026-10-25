@@ -47,21 +47,23 @@ description: React/TSX component, TypeScript typing, state, và naming conventio
 
 ## Naming
 - Hàm xử lý sự kiện/thao tác người dùng luôn có tiền tố `handleX` — kể cả thêm/xóa item (`handleAddItem`, `handleRemoveItem`, không dùng `addItem`/`removeItem` trần).
-- Biến/props: camelCase. Boolean: tiền tố `is`/`has`/`show` (`isUploading`, `hasError`, `showPhoto`).
+- Biến/props: camelCase. Boolean: tiền tố `is`/`has`/`show` (`isUploading`, `hasError`, `isCurrent`).
 - Field boolean trong data model không được trùng lặp ý nghĩa (tránh kiểu `pageBreak` và `pageBreakAfter` cùng tồn tại) — chỉ giữ 1 field cho 1 khái niệm.
 - Type/union: PascalCase (`CvData`, `TemplateId`). Hằng cấu hình (themes, fonts, presets): `UPPER_SNAKE_CASE` hoặc object `as const`.
 
 ## Key & id cho list
-- Schema JSON **không có `id`**. List object có thể thêm/xóa/sắp xếp (experience, projects, education, certifications, references, skills) được gán `id` nội bộ khi import/tạo mới, và bị loại bỏ khi export JSON — file export phải đúng schema gốc.
+- Schema JSON **không có `id`**. List object có thể thêm/xóa/sắp xếp (experience, projects, `projects[].meta`, education, certifications, references, skills) được gán `id` nội bộ khi import/tạo mới, và bị loại bỏ khi export JSON — file export phải đúng schema.
 - `key` dùng id ổn định đó, không dùng `key={index}`. Riêng list chuỗi đơn thuần (`string[]` như `responsibilities`, `skills[].items`) không reorder thì được dùng index.
 
 ## JSX patterns
+- Mọi chữ hiển thị trên UI (label, nút, placeholder, thông báo, lỗi validate, `aria-label`, trang login) viết **tiếng Anh** — người dùng đã chốt vì UI tiếng Việt gây rối khi nội dung CV là tiếng Anh. Comment trong code vẫn viết tiếng Việt.
 - Conditional render dùng `&&`, tránh ternary lồng sâu cho render block:
   ```tsx
   {hasValue(project.achievement) && (
       <p className="project-achievement">{project.achievement}</p>
   )}
   ```
-- Inline style chỉ dùng cho giá trị phụ thuộc state/props động (vd: biến màu theme của mẫu CV, opacity khi kéo-thả). Styling tĩnh luôn đưa vào class CSS — xem `css-conventions.md`.
+- UI dùng component HeroUI v3 (API compound: `Select.Trigger`, `Card.Header`...; sự kiện là `onPress`/`onChange(value)`, không phải `onClick`/`e.target.value`). Styling bằng Tailwind `className`; inline style chỉ cho giá trị động (màu swatch theo preset, biến `--cv-*`) — xem `css-conventions.md`.
+- Text dài cho phép link: dùng `RichTextArea` hoặc `StringListField` (có nút chèn link); hiển thị qua `renderRichText`, không bao giờ `dangerouslySetInnerHTML`.
 - Không để lại `console.log`/`console.error` trong render path hoặc trong code merge vào nhánh chính. Nếu cần debug tạm, xóa trước khi commit.
 - Không dùng `dangerouslySetInnerHTML` với dữ liệu từ JSON người dùng import. Render text thuần qua JSX.

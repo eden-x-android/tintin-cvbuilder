@@ -37,20 +37,23 @@
 
 ## Project Snapshot
 
-- **Stack:** React 19 + Vite 7 + TypeScript (strict), plain CSS (no
-  CSS-in-JS/Tailwind), ESLint 9. Netlify functions stay plain JS.
+- **Stack:** React 19 + Vite 7 + TypeScript (strict), HeroUI v3 + Tailwind
+  v4 for the app UI, plain CSS for the CV template, ESLint 9. Netlify
+  functions stay plain JS.
 - **Architecture:** Single-page app, prop-drilled state — `App.tsx` owns
   `CvData` via `useState`, passes it to `CvForm` (editor) and `CvPreview`
   (A4 template). Pure helpers in `src/utils/` build the template view-model.
 - **Data layer:** No backend/database — CV data lives in client state; JSON
   import/export is the only persistence. Avatar stored as data URL in JSON.
-- **UI style:** Neobrutalism copied from repo `auto-content`
-  (`web/src/app/globals.css`); CV pages follow the design export instead —
-  see `@.agents/rules/css-conventions.md`.
+- **UI style:** HeroUI default look, lime `#cfff04` as the accent (dark text on
+  it); theme overrides in `src/theme.css`. CV pages follow the design export
+  instead — see `@.agents/rules/css-conventions.md`.
 - **Hosting & auth:** Netlify, auto-deployed from `master`. Login gate
   (edge function + OTP via Resend + Blobs) ported from repo `cv-by-html`.
-  See `@.agents/rules/netlify-cost-safety.md`.
-- **Status:** rules only — app not scaffolded yet.
+  The login page is a separate Vite bundle under `/login/`
+  (`vite.login.config.ts`). See `@.agents/rules/netlify-cost-safety.md`.
+- **Fonts:** self-hosted in `public/fonts/`, declared in `src/Fonts.css` — see
+  `@.agents/rules/cv-templates.md`.
 
 ---
 
@@ -74,9 +77,9 @@
 
 | File | Load when... |
 |---|---|
-| `@.agents/rules/css-conventions.md` | Writing or editing CSS: class naming, UI-app vs CV-template variables, units (`rem` for app, exact `px` for CV pages), inline style vs class, fonts, print styles. |
+| `@.agents/rules/css-conventions.md` | Any styling: HeroUI/Tailwind usage and theme tokens for the app UI, plain-CSS rules for the CV template (exact px, `--cv-*` vars), fonts, print styles. |
 | `@.agents/rules/cv-templates.md` | Touching `AtsTemplate`, `presets.ts`, `buildCvView`, fonts in `public/fonts/`, or reading/extracting anything from `asset/*.html`. |
-| `@.agents/rules/file-organization.md` | Adding/moving files or folders, creating a new component/util/type, deciding where a CSS/asset/font file belongs. |
-| `@.agents/rules/netlify-cost-safety.md` | Any task touching `netlify.toml`, `netlify/`, `public/login/`, deploys, billing/plan changes, email sending, or adding a new cloud service. |
+| `@.agents/rules/file-organization.md` | Adding/moving files or folders, creating a new component/util/type, touching `login/` or `vite.login.config.ts`, deciding where an asset/font file belongs. |
+| `@.agents/rules/netlify-cost-safety.md` | Any task touching `netlify.toml`, `netlify/`, `login/`, `.github/workflows/`, deploys, billing/plan changes, email sending, or adding a new cloud service. |
 | `@.agents/rules/PRONOUNS.md` | Any reply written in Vietnamese — governs self-reference ("em") and how the user is addressed ("đại ca"). |
-| `@.agents/rules/react-conventions.md` | Writing or editing React/TS code: typing `CvData` and props, component declaration, nested state updates, internal ids/keys, handler naming, JSX patterns. |
+| `@.agents/rules/react-conventions.md` | Writing or editing React/TS code: typing `CvData` and props, HeroUI component usage, nested state updates, internal ids/keys, links in text, handler naming. |

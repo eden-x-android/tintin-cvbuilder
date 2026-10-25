@@ -1,0 +1,51 @@
+/* Entry CSS dùng chung cho app (src/main.tsx) và trang login (login/main.tsx).
+   UI: HeroUI v3 + Tailwind v4, vàng chanh làm điểm nhấn. Mẫu CV có CSS riêng (AtsTemplate.css). */
+
+@import "tailwindcss";
+@import "@heroui/styles";
+@import "./Fonts.css";
+
+@theme {
+    --font-sans: 'Be Vietnam Pro', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    --font-display: 'Archivo', 'Be Vietnam Pro', ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Override biến theme của HeroUI (light). App luôn ở light: index.html set class="light". */
+:root {
+    /* Vàng chanh giữ từ bản cũ (repo auto-content). Chữ trên nền vàng luôn đen. */
+    --lime: #cfff04;
+    --ink: #111311;
+
+    --accent: var(--lime);
+    --accent-foreground: var(--ink);
+    --accent-hover: #c2f000;
+    --accent-soft: color-mix(in oklab, var(--lime) 28%, transparent);
+    --accent-soft-foreground: #3d4a00;
+    --accent-soft-hover: color-mix(in oklab, var(--lime) 40%, transparent);
+
+    --background: #f5f5f0;
+    --foreground: var(--ink);
+    --muted: #6b6d66;
+    --border: #e4e4dc;
+    --separator: #ebebe4;
+
+    /* Viền focus vàng chanh không đủ tương phản trên nền sáng — dùng mực đậm. */
+    --focus: var(--ink);
+    --link: var(--ink);
+
+    --radius: 0.625rem;
+}
+
+html,
+body {
+    background: var(--background);
+    color: var(--foreground);
+    -webkit-font-smoothing: antialiased;
+}
+
+@media print {
+    html,
+    body {
+        background: #fff;
+    }
+}
