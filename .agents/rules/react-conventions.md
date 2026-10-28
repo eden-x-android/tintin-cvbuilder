@@ -52,6 +52,7 @@ description: React/TSX component, TypeScript typing, state, và naming conventio
 - Type/union: PascalCase (`CvData`, `TemplateId`). Hằng cấu hình (themes, fonts, presets): `UPPER_SNAKE_CASE` hoặc object `as const`.
 
 ## Key & id cho list
+- File **Export JSON** bỏ `id` nội bộ và các field ngắt trang (`sectionBreaks`, `pageBreakAfter`) — xem `toExportJson`; nháp localStorage dùng `toDraftJson` để giữ ngắt trang. Import file thiếu các field này thì coi là tắt.
 - Schema JSON **không có `id`**. List object có thể thêm/xóa/sắp xếp (experience, projects, `projects[].meta`, education, certifications, references, skills) được gán `id` nội bộ khi import/tạo mới, và bị loại bỏ khi export JSON — file export phải đúng schema.
 - `key` dùng id ổn định đó, không dùng `key={index}`. Riêng list chuỗi đơn thuần (`string[]` như `responsibilities`, `skills[].items`) không reorder thì được dùng index.
 

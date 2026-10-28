@@ -1,6 +1,6 @@
 import type { CvData } from '../types/cv';
 import { DEFAULT_TEMPLATE_ID, isTemplateId, type TemplateId } from '../templates/presets';
-import { toExportJson } from './cvIds';
+import { toDraftJson } from './cvIds';
 import { validateCv } from './validateCv';
 
 // Bản nháp tự lưu trong localStorage của trình duyệt — chỉ là tiện ích, không thay cho Export JSON.
@@ -25,7 +25,7 @@ export const loadDraft = (): { data: CvData; templateId: TemplateId } | null => 
 
 export const saveDraft = (data: CvData, templateId: TemplateId): boolean => {
     try {
-        localStorage.setItem(STORAGE_KEY, `{"data":${toExportJson(data)},"settings":${JSON.stringify({ templateId })}}`);
+        localStorage.setItem(STORAGE_KEY, `{"data":${toDraftJson(data)},"settings":${JSON.stringify({ templateId })}}`);
         return true;
     } catch {
         return false;

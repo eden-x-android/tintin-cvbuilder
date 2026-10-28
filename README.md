@@ -34,9 +34,9 @@ Node 22 is used on Netlify and CI (Vite 7 needs Node >= 20.19).
 - `projects[]` is its own section; details live in `meta: [{ "key": "SDLC", "value": "Agile/Scrum" }]`.
 - `education[]`: `startYear` / `endYear` as `"YYYY"`.
 - Long text may contain links as `[text](https://...)`.
-- Page breaks: `sectionBreaks` (start a section on a new page) and `pageBreakAfter` on each job / project.
+- Page breaks: `sectionBreaks` (start a section on a new page) and `pageBreakAfter` on each job / project. They are print layout, not CV content: **Export JSON leaves them out** (they stay in the browser draft), and a file without them imports with all page breaks off.
 - `personal.photo`: optional data URL of the profile photo.
-- Import validates the file and lists errors by field path. Export writes exactly this schema (no internal ids).
+- Import validates the file and lists errors by field path. Export writes this schema without internal ids and without page breaks.
 
 ## Printing
 
