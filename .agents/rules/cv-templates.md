@@ -24,7 +24,7 @@ Chỉ khác giá trị mặc định. Đều dùng layout **Clean (ATS)** + ph�
 
 ## Quy tắc port
 - Port markup ATS 1:1: giữ thứ tự section (header → contacts → SUMMARY → OBJECTIVE → SKILLS → RELEVANT EXPERIENCE → PROJECTS → footer phương án 1), giữ nguyên text tiêu đề tiếng Anh in hoa, mọi kích thước px, gap, letter-spacing, line-height, màu xám trung tính.
-- Trang: `794px × min-height 1123px`, padding `52px 56px`, nền trắng, box-shadow chỉ hiện trên màn hình. In: `@page { size: A4; margin: 0 }`.
+- Trang: `794px × min-height 1123px`, padding `52px 56px`, nền trắng, box-shadow chỉ hiện trên màn hình. In: `@page { size: A4; margin: 0 }` (khai báo trong `AtsTemplate.css`).
 - Logic `renderVals()` port thành hàm thuần `buildCvView` — giữ đúng hành vi: bỏ giá trị rỗng/`null`/mảng rỗng, ghép `startDate – endDate` bằng en dash (tháng in dạng `June 2024`), contact LinkedIn bỏ `https://www.` và `/` cuối, Location tách khỏi lưới contact.
 - Link trên CV (contact, email reference, link nhúng trong text) dùng chung kiểu highlight `.cv-link` của thiết kế: chữ `#2a2a2e`, không gạch chân, dải `tint` của theme cao 42% ở chân chữ, hover phủ kín.
 - Ảnh: slot `88×88px`, bo góc `10px`, lấy từ data URL trong `CvData`; chưa có ảnh thì ẩn.

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import type { CvView } from '../utils/buildCvView';
 import type { TemplatePreset } from '../templates/presets';
+import { paginate, type PageBreak } from '../utils/paginate';
 import AtsTemplate from './AtsTemplate';
 import './CvPreview.css';
 
@@ -13,31 +14,23 @@ type CvPreviewProps = {
     preset: TemplatePreset;
 };
 
-type PageBoundary = { top: number; isForced: boolean };
+const KEEP_SELECTOR = '.cv-keep, .cv-keep-next';
 
-// Ước lượng chỗ ngắt trang: mỗi trang dài tối đa PAGE_HEIGHT, hoặc kết thúc sớm ở chỗ ngắt chủ động.
-const computeBoundaries = (height: number, forced: number[]): PageBoundary[] => {
-    const result: PageBoundary[] = [];
-    let start = 0;
-    while (start + PAGE_HEIGHT < height - 1) {
-        const limit = start + PAGE_HEIGHT;
-        const nextForced = forced.find(y => y > start + 1 && y <= limit);
-        const top = nextForced ?? limit;
-        result.push({ top, isForced: nextForced !== undefined });
-        start = top;
+// Trang mới bắt đầu ở mép trên của container ngoài cùng mà khối là con đầu tiên (vd. footer có padding-top),
+// vì trình duyệt không ngắt trang giữa mép trên container và con đầu của nó.
+const breakStart = (el: HTMLElement, page: HTMLElement): HTMLElement => {
+    let start = el;
+    while (!start.previousElementSibling && start.parentElement && start.parentElement !== page) {
+        start = start.parentElement;
     }
-    forced.filter(y => y > start + 1 && y < height - 1).forEach(top => {
-        result.push({ top, isForced: true });
-        start = top;
-    });
-    return result;
+    return start;
 };
 
 const CvPreview = ({ view, preset }: CvPreviewProps) => {
     const frameRef = useRef<HTMLDivElement>(null);
     const canvasRef = useRef<HTMLDivElement>(null);
     const [scale, setScale] = useState(1);
-    const [boundaries, setBoundaries] = useState<PageBoundary[]>([]);
+    const [boundaries, setBoundaries] = useState<PageBreak[]>([]);
 
     // Đo bằng rect rồi quy về px chưa zoom, để không phụ thuộc cách trình duyệt báo kích thước khi có zoom.
     const measure = useCallback(() => {
@@ -48,17 +41,25 @@ const CvPreview = ({ view, preset }: CvPreviewProps) => {
         const available = frame.clientWidth - parseFloat(styles.paddingLeft) - parseFloat(styles.paddingRight);
         setScale(Math.min(1, available / PAGE_WIDTH));
 
+        const page = canvas.querySelector<HTMLElement>('.cv-page');
         const rect = canvas.getBoundingClientRect();
-        if (rect.width === 0) return;
+        if (!page || rect.width === 0) return;
         const ratio = PAGE_WIDTH / rect.width;
-        const forced = Array.from(canvas.querySelectorAll<HTMLElement>('[data-break]'))
-            .map(el => {
-                const box = el.getBoundingClientRect();
-                const edge = el.dataset.break === 'before' ? box.top : box.bottom;
-                return (edge - rect.top) * ratio;
-            })
-            .sort((a, b) => a - b);
-        setBoundaries(computeBoundaries(rect.height * ratio, forced));
+        const toY = (y: number) => (y - rect.top) * ratio;
+
+        // Chỉ lấy khối ngoài cùng (vd. dòng footer nằm trong .cv-footer-row đã là một khối).
+        const boxes = Array.from(canvas.querySelectorAll<HTMLElement>(KEEP_SELECTOR))
+            .filter(el => !el.parentElement?.closest(KEEP_SELECTOR))
+            .map(el => ({
+                top: toY(breakStart(el, page).getBoundingClientRect().top),
+                bottom: toY(el.getBoundingClientRect().bottom),
+                keepWithNext: el.classList.contains('cv-keep-next'),
+            }));
+        const forced = Array.from(canvas.querySelectorAll<HTMLElement>('[data-break]')).map(el => {
+            const box = el.getBoundingClientRect();
+            return toY(el.dataset.break === 'before' ? box.top : box.bottom);
+        });
+        setBoundaries(paginate(boxes, forced, PAGE_HEIGHT, parseFloat(getComputedStyle(page).paddingTop)));
     }, []);
 
     useEffect(() => {
@@ -84,7 +85,7 @@ const CvPreview = ({ view, preset }: CvPreviewProps) => {
                         className={`cv-preview-page-break print:hidden ${b.isForced ? 'is-forced' : ''}`}
                         style={{ top: b.top }}
                     >
-                        <span>{b.isForced ? `Page break · end of page ${i + 1}` : `≈ End of page ${i + 1} (A4)`}</span>
+                        <span>{b.isForced ? `Page break · end of page ${i + 1}` : `End of page ${i + 1} (A4)`}</span>
                     </div>
                 ))}
             </div>

@@ -6,7 +6,8 @@ import './AtsTemplate.css';
 
 // Layout "Clean (ATS)" + footer "Phương án 1 · Bảng thống nhất" của bản export (asset/CV P1*.html).
 // Markup giữ 1:1 với thiết kế — xem .agents/rules/cv-templates.md trước khi sửa.
-// `data-break` đánh dấu chỗ ngắt trang chủ động để CvPreview vẽ vạch trên màn hình.
+// `data-break` đánh dấu chỗ ngắt trang chủ động; `cv-keep` (khối không được cắt ngang trang) và `cv-keep-next`
+// (tiêu đề dính với dòng sau) vừa là luật in vừa là dữ liệu để utils/paginate.ts tính đúng chỗ ngắt trang.
 
 type AtsTemplateProps = {
     view: CvView;
@@ -38,7 +39,7 @@ const AtsTemplate = ({ view, preset }: AtsTemplateProps) => {
 
     return (
         <article className="cv-page" style={themeVars}>
-            <header className="cv-header">
+            <header className="cv-header cv-keep">
                 <div className="cv-identity">
                     <h1 className="cv-name">{view.fullName}</h1>
                     <span className="cv-title">{view.title}</span>
@@ -48,7 +49,7 @@ const AtsTemplate = ({ view, preset }: AtsTemplateProps) => {
             </header>
 
             {view.contacts.length > 0 && (
-                <div className="cv-contacts">
+                <div className="cv-contacts cv-keep">
                     {view.contacts.map(c => (
                         <div key={c.label} className="cv-contact">
                             <span className="cv-contact-label">{c.label}</span>
@@ -64,17 +65,17 @@ const AtsTemplate = ({ view, preset }: AtsTemplateProps) => {
 
             {view.summary.length > 0 && (
                 <section {...section('cv-gap-8', view.breaks.summary)}>
-                    <span className="cv-section-title">SUMMARY</span>
+                    <span className="cv-section-title cv-keep-next">SUMMARY</span>
                     {view.summary.map((item, i) => (
-                        <span key={i} className="cv-summary-item">• {rich(item)}</span>
+                        <span key={i} className="cv-summary-item cv-keep">• {rich(item)}</span>
                     ))}
                 </section>
             )}
 
             {view.objectives.length > 0 && (
                 <section {...section('cv-gap-10', view.breaks.objective)}>
-                    <span className="cv-section-title">OBJECTIVE</span>
-                    <div className="cv-objectives">
+                    <span className="cv-section-title cv-keep-next">OBJECTIVE</span>
+                    <div className="cv-objectives cv-keep">
                         {view.objectives.map((o, i) => (
                             <div key={i} className="cv-objective">
                                 <span className="cv-objective-label">{o.label}</span>
@@ -90,9 +91,9 @@ const AtsTemplate = ({ view, preset }: AtsTemplateProps) => {
 
             {view.skills.length > 0 && (
                 <section {...section('cv-gap-10', view.breaks.skills)}>
-                    <span className="cv-section-title">SKILLS</span>
+                    <span className="cv-section-title cv-keep-next">SKILLS</span>
                     {view.skills.map(s => (
-                        <div key={s.id} className="cv-skill-row">
+                        <div key={s.id} className="cv-skill-row cv-keep">
                             <span className="cv-skill-category">{s.category}</span>
                             <div className="cv-skill-chips">
                                 {s.items.map((item, i) => (
@@ -106,19 +107,19 @@ const AtsTemplate = ({ view, preset }: AtsTemplateProps) => {
 
             {view.experience.length > 0 && (
                 <section {...section('cv-gap-16', view.breaks.experience)}>
-                    <span className="cv-section-title">RELEVANT EXPERIENCE</span>
+                    <span className="cv-section-title cv-keep-next">RELEVANT EXPERIENCE</span>
                     {view.experience.map(job => (
                         <div
                             key={job.id}
                             className={`cv-job ${job.pageBreakAfter ? 'cv-break-after' : ''}`}
                             {...breakAfter(job.pageBreakAfter)}
                         >
-                            <span className="cv-job-heading">
+                            <span className="cv-job-heading cv-keep-next">
                                 {job.role} <span className="cv-job-at">at</span> {job.company}
                             </span>
-                            {job.period && <span className="cv-job-period">{job.period}</span>}
+                            {job.period && <span className="cv-job-period cv-keep-next">{job.period}</span>}
                             {job.responsibilities.map((item, i) => (
-                                <span key={i} className="cv-job-item">• {rich(item)}</span>
+                                <span key={i} className="cv-job-item cv-keep">• {rich(item)}</span>
                             ))}
                         </div>
                     ))}
@@ -127,24 +128,24 @@ const AtsTemplate = ({ view, preset }: AtsTemplateProps) => {
 
             {view.projects.length > 0 && (
                 <section {...section('cv-gap-14', view.breaks.projects)}>
-                    <span className="cv-section-title">PROJECTS</span>
+                    <span className="cv-section-title cv-keep-next">PROJECTS</span>
                     {view.projects.map(pj => (
                         <div
                             key={pj.id}
                             className={`cv-project ${pj.pageBreakAfter ? 'cv-break-after' : ''}`}
                             {...breakAfter(pj.pageBreakAfter)}
                         >
-                            <span className="cv-project-name">{pj.name}</span>
-                            {pj.metaLine && <span className="cv-project-meta">{pj.metaLine}</span>}
-                            {pj.overview && <span className="cv-project-overview">{rich(pj.overview)}</span>}
+                            <span className="cv-project-name cv-keep-next">{pj.name}</span>
+                            {pj.metaLine && <span className="cv-project-meta cv-keep-next">{pj.metaLine}</span>}
+                            {pj.overview && <span className="cv-project-overview cv-keep">{rich(pj.overview)}</span>}
                             {pj.responsibilities.length > 0 && (
-                                <span className="cv-project-label">Responsibilities:</span>
+                                <span className="cv-project-label cv-keep-next">Responsibilities:</span>
                             )}
                             {pj.responsibilities.map((item, i) => (
-                                <span key={i} className="cv-project-item">• {rich(item)}</span>
+                                <span key={i} className="cv-project-item cv-keep">• {rich(item)}</span>
                             ))}
                             {pj.achievement && (
-                                <span className="cv-project-result">
+                                <span className="cv-project-result cv-keep">
                                     <b className="cv-accent-text">Result:</b> {rich(pj.achievement)}
                                 </span>
                             )}
@@ -159,7 +160,7 @@ const AtsTemplate = ({ view, preset }: AtsTemplateProps) => {
                     className={`cv-footer ${view.breaks.footer ? 'cv-break-before' : ''}`}
                 >
                     {view.education.length > 0 && (
-                        <div className="cv-footer-row">
+                        <div className="cv-footer-row cv-keep">
                             <span className="cv-section-title">EDUCATION</span>
                             <div className="cv-footer-list cv-gap-6">
                                 {view.education.map(e => (
@@ -183,7 +184,7 @@ const AtsTemplate = ({ view, preset }: AtsTemplateProps) => {
                     )}
 
                     {view.certifications.length > 0 && (
-                        <div className="cv-footer-row">
+                        <div className="cv-footer-row cv-keep">
                             <span className="cv-section-title">CERTIFICATIONS</span>
                             <div className="cv-footer-list cv-gap-4">
                                 {view.certifications.map(c => (
@@ -198,7 +199,7 @@ const AtsTemplate = ({ view, preset }: AtsTemplateProps) => {
                     )}
 
                     {view.references.length > 0 && (
-                        <div className="cv-footer-row">
+                        <div className="cv-footer-row cv-keep">
                             <span className="cv-section-title">REFERENCES</span>
                             <div className="cv-footer-list cv-gap-4">
                                 {view.references.map(ref => (
