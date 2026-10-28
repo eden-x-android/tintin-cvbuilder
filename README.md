@@ -41,7 +41,9 @@ Node 22 is used on Netlify and CI (Vite 7 needs Node >= 20.19).
 ## Printing
 
 Click **In / PDF**, choose "Save as PDF", paper A4, margins "None".
-Red dashed lines in the preview estimate page ends; black lines are forced page breaks (exact when printed).
+Red dashed lines in the preview show where each A4 page ends when printed; black lines are forced page breaks.
+Long jobs and projects may continue on the next page, but only between lines: a line is never cut in half and a heading always stays with the line below it.
+Use "Page break after this item" to move a whole item to the next page.
 
 ## CI / CD
 

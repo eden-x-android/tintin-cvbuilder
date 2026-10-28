@@ -29,4 +29,4 @@ Project có **2 vùng style độc lập**, không được trộn biến/class 
 
 ## Font & print
 - Mọi `@font-face` ở `src/Fonts.css` (import trong `src/theme.css`). Font tự host trong `public/fonts/` (font mẫu CV lấy từ bản export, font UI lấy từ Google Fonts), không phụ thuộc Google Fonts lúc chạy/in.
-- In: `@page { size: A4; margin: 0 }`; `break-inside: avoid` cho block không được cắt đôi, `break-after: avoid` cho tiêu đề section, `.cv-break-before` / `.cv-break-after` cho ngắt trang chủ động. Trang CV dùng `box-decoration-break: clone` để padding lặp lại ở mỗi trang A4, và bỏ box-shadow khi in.
+- In: `@page { size: A4; margin: 0 }`; chia trang theo từng dòng: `.cv-keep` (break-inside: avoid) cho mỗi dòng/khối nhỏ, `.cv-keep-next` (thêm break-after: avoid) cho tiêu đề — job/project dài được tách giữa các dòng, không đẩy nguyên khối sang trang sau. Thêm phần tử mới vào mẫu CV thì gắn một trong hai class này, vì `utils/paginate.ts` dựa vào chúng để vẽ vạch ngắt trang khớp bản in; `.cv-break-before` / `.cv-break-after` cho ngắt trang chủ động. Trang CV dùng `box-decoration-break: clone` để padding lặp lại ở mỗi trang A4, và bỏ box-shadow khi in.

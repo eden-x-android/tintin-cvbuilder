@@ -215,7 +215,6 @@
     display: flex;
     flex-direction: column;
     gap: 6px;
-    break-inside: avoid;
 }
 
 .cv-job-heading {
@@ -248,7 +247,6 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
-    break-inside: avoid;
 }
 
 .cv-project-name {
@@ -302,7 +300,6 @@
     gap: 14px;
     padding-top: 16px;
     border-top: 1px solid var(--cv-line);
-    break-inside: avoid;
 }
 
 .cv-footer-row {
@@ -349,6 +346,13 @@
 
 /* ---------------------------------- print --------------------------------- */
 
+/* Khổ A4, không lề: lề trang do padding .cv-page đảm nhận (lặp lại mỗi trang nhờ box-decoration-break).
+   Thiếu rule này thì trình duyệt dùng khổ giấy + lề mặc định, trang bị ngắn đi và ngắt sớm hơn preview. */
+@page {
+    size: A4;
+    margin: 0;
+}
+
 @media print {
     .cv-page {
         box-shadow: none;
@@ -357,8 +361,15 @@
         -webkit-box-decoration-break: clone;
     }
 
-    /* Không để tiêu đề section treo một mình ở cuối trang (bản export gốc bị lỗi này). */
-    .cv-section-title {
+    /* Job / project dài được phép tách sang trang sau, nhưng chỉ giữa các dòng: mỗi dòng (cv-keep)
+       không bị cắt ngang, tiêu đề (cv-keep-next) luôn dính với dòng đầu bên dưới — không treo ở cuối trang.
+       CvPreview mô phỏng đúng 2 luật này (utils/paginate.ts) để vạch ngắt trang khớp bản in. */
+    .cv-keep,
+    .cv-keep-next {
+        break-inside: avoid;
+    }
+
+    .cv-keep-next {
         break-after: avoid;
     }
 

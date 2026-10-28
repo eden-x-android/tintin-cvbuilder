@@ -10,8 +10,8 @@
     margin: 0 auto;
 }
 
-/* Vạch ngắt trang — chỉ hiện trên màn hình. Vạch ước lượng có thể lệch so với bản in vì khi in,
-   block có break-inside: avoid bị đẩy sang trang sau. Vạch ngắt chủ động thì đúng vị trí. */
+/* Vạch ngắt trang — chỉ hiện trên màn hình. Vị trí tính bằng utils/paginate.ts theo đúng luật in
+   (.cv-keep / .cv-keep-next / ngắt chủ động), nên khớp chỗ trình duyệt ngắt trang khi in. */
 .cv-preview-page-break {
     position: absolute;
     left: -12px;
